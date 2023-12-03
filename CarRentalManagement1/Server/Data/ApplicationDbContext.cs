@@ -1,4 +1,4 @@
-﻿using CarRentalManagement.Server.Configurations.Entities;
+﻿using CarRentalManagement1.Server.Configurations.Entities;
 using CarRentalManagement1.Server.Configurations.Entities;
 using CarRentalManagement1.Server.Models;
 using CarRentalManagement1.Shared.Domain;
