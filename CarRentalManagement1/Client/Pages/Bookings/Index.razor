@@ -6,6 +6,13 @@
 <h3 class="card-title">Car Bookings</h3>
 <br />
 
+<a href="/customers/create" class="btn btn-secondary">
+    <span class="oi -oi-plus"></span>
+    Create New Booking
+</a>
+<br />
+<br />
+
 @if (Bookings == null)
 {
     <div class="alert alert-info">Loading Bookings...</div>
@@ -30,23 +37,22 @@ else
                     <td>@booking.Id</td>
                     <td>@booking.Customer.DrivingLicense</td>
                     <td>@booking.DateCreated.Date.ToString("dd MMMM yyyy")</td>
-                    <td>@((booking.DateIn - booking.DateOut).TotalDays.ToString())</td>
+                   @** <td>
+                        @(booking.DateIn != nullDT ? (booking.DateIn -
+                            booking.DateOut).TotalDays.ToString() : "To Be Determined")
+            </td>*@
+                    <td>
+                        @(booking.DateIn != null ? (booking.DateIn.Value -
+                            booking.DateOut).TotalDays.ToString() : "To Be Determined")
+                    </td>
                     <td>@booking.Vehicle.LicensePlateNumber</td>
-                <td>
+                    <td>
                         <a href="/bookings/view/@booking.Id" class="btn btn-primary">
                             <span class="oi oi-book"></span>
                         </a>
-                        <a href="/bookings/edit/@booking.Customer.DrivingLicense" class="btn btn-primary">
+                        <a href="/bookings/edit/@booking.Id" class="btn btn-warning">
                             <span class="oi oi-book"></span>
-                        </a>
-                        <a href="/bookings/view/@booking.DateCreated.Date.ToString("dd MMMM yyyy")" class="btn btn-primary">
-                            <span class="oi oi-book"></span>
-                        </a>
-                        <a href="/bookings/view/@((booking.DateIn - booking.DateOut).TotalDays.ToString()) class="btn btn-primary">
-                            <span class="oi oi-book"></span>
-                        </a>
-                        <a href="/bookings/view/@booking.Vehicle.LicensePlateNumber" class="btn btn-primary">
-                            <span class="oi oi-book"></span>
+
                         </a>
                         <button class="btn btn-danger" @onclick="@(()=>Delete(booking.Id))">
                             <span class="oi oi-delete"></span>
@@ -60,6 +66,7 @@ else
 
 @code {
     private List<Booking>? Bookings;
+    private DateTime nullDT = new DateTime(1, 1, 1, 0, 0, 0);
 
     protected async override Task OnInitializedAsync()
     {

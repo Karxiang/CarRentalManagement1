@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CarRentalManagement1.Server.Data;
 using CarRentalManagement1.Shared.Domain;
 using CarRentalManagement1.Server.IRepository;
+using CarRentalManagement1.Server.Repository;
 
 namespace CarRentalManagement1.Server.Controllers
 {
@@ -15,51 +16,52 @@ namespace CarRentalManagement1.Server.Controllers
     [ApiController]
     public class CustomersController : ControllerBase
     {
+        //refactored
         //private readonly ApplicationDbContext _context;
         private readonly IUnitOfWork _unitOfWork;
 
+        //refactored
         //public CustomersController(ApplicationDbContext context)
         public CustomersController(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = unitOfWork;
+            //refactored
             //_context = context;
-
+            _unitOfWork = unitOfWork;
         }
 
         // GET: api/Customers
         [HttpGet]
+        //refactored
         //public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
         public async Task<IActionResult> GetCustomers()
         {
+            //refactored
             //if (_context.Customers == null)
             //{
-            //  return NotFound();
+            //    return NotFound();
             //}
-            //return await _context.Customers.ToListAsync();
-
+            //  return await _context.Customers.ToListAsync();
             var Customers = await _unitOfWork.Customers.GetAll();
             return Ok(Customers);
         }
 
         // GET: api/Customers/5
         [HttpGet("{id}")]
+        //refactored
         //public async Task<ActionResult<Customer>> GetCustomer(int id)
-        public async Task<IActionResult> GetCustomer(int id)
+        public async Task<IActionResult> GetCustomers(int id)
         {
-          /*if (_context.Customers == null)
-          {
-              return NotFound();
-          }*/
-            //var Customer = await _context.Customers.FindAsync(id);
+            /*if (_context.Customers == null)
+            {
+                return NotFound();
+            }*/
             var Customer = await _unitOfWork.Customers.Get(q => q.Id == id);
-
 
             if (Customer == null)
             {
                 return NotFound();
             }
 
-            //return Customer;
             return Ok(Customer);
         }
 
@@ -73,16 +75,19 @@ namespace CarRentalManagement1.Server.Controllers
                 return BadRequest();
             }
 
+            //refactored
             //_context.Entry(Customer).State = EntityState.Modified;
             _unitOfWork.Customers.Update(Customer);
 
             try
             {
+                //refactored
                 //await _context.SaveChangesAsync();
                 await _unitOfWork.Save(HttpContext);
             }
             catch (DbUpdateConcurrencyException)
             {
+                //refactored
                 //if (!CustomerExists(id))
                 if (!await CustomerExists(id))
                 {
@@ -102,20 +107,17 @@ namespace CarRentalManagement1.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Customer>> PostCustomer(Customer Customer)
         {
-          /*if (_context.Customers == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.Customers'  is null.");
-          }*/
-
             //refactored
-           // _context.Customers.Add(Customer);
-            //await _context.SaveChangesAsync();
-
+            /*if (_context.Customers == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Customers'  is null.");
+            }
+              _context.Customers.Add(Customer);
+              await _context.SaveChangesAsync();*/
             await _unitOfWork.Customers.Insert(Customer);
             await _unitOfWork.Save(HttpContext);
 
-
-            return CreatedAtAction("GetCustomer", new { id = Customer.Id }, Customer);
+            return CreatedAtAction("GetCustomer", new { Customer.Id }, Customer);
         }
 
         // DELETE: api/Customers/5
@@ -126,11 +128,9 @@ namespace CarRentalManagement1.Server.Controllers
             {
                 return NotFound();
             }*/
-
-            //refactor
+            //refactored
             //var Customer = await _context.Customers.FindAsync(id);
-            var Customer = await _unitOfWork.Customers.Get(q => q.Id ==id);
-
+            var Customer = await _unitOfWork.Customers.Get(q => q.Id == id);
             if (Customer == null)
             {
                 return NotFound();
@@ -150,8 +150,8 @@ namespace CarRentalManagement1.Server.Controllers
         private async Task<bool> CustomerExists(int id)
         {
             //refactored
-            //return (_context.Customers?.Any(e => e.Id == id)).GetValueOrDefault();
-            var Customer = await _unitOfWork.Customers.Get(q =>q.Id ==id);
+            //return (_context.Customers?.Any(e => e.id == id)).GetValueOrDefault();
+            var Customer = await _unitOfWork.Customers.Get(q => q.Id == id);
             return Customer != null;
         }
     }
