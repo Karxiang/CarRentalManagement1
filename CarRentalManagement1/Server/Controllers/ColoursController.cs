@@ -31,6 +31,7 @@ namespace CarRentalManagement1.Server.Controllers
         //public async Task<ActionResult<IEnumerable<Colour>>> GetColours()
         public async Task<IActionResult> GetColours()
         {
+            //return NotFound(); this is now to display error msg
             //if (_context.Colours == null)
             //{
             //  return NotFound();

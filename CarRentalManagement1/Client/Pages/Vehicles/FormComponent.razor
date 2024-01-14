@@ -2,6 +2,7 @@
 <EditForm Model="@vehicle" OnValidSubmit="@OnValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
+    <fieldset disabled="@Disabled" >
 
     <div class="form-group">
         <label>Make: </label>
@@ -19,7 +20,9 @@
             <ValidationMessage For="@(() => vehicle.MakeId)" />
         </div>
     </div>
+    </fieldset>
 
+    <fieldset disabled="@Disabled" >
     <div class="form-group">
         <label>Model: </label>
         <div>
@@ -36,7 +39,10 @@
             <ValidationMessage For="@(() => vehicle.ModelId)" />
         </div>
     </div>
+        </fieldset>
 
+
+    <fieldset disabled="@Disabled" >
     <div class="form-group">
         <label>Colour: </label>
         <div>
@@ -53,7 +59,9 @@
             <ValidationMessage For="@(() => vehicle.ColourId)" />
         </div>
     </div>
+            </fieldset>
 
+    <fieldset disabled="@Disabled" >
     <div class="form-group">
         <label>Year: </label>
         <div>
@@ -61,6 +69,9 @@
             <ValidationMessage For="@(() => vehicle.MakeId)" />
         </div>
     </div>
+                </fieldset>
+
+    <fieldset disabled="@Disabled" >
 
     <div class="form-group">
         <label>License Plate Number: </label>
@@ -69,6 +80,9 @@
             <ValidationMessage For="@(() => vehicle.MakeId)" />
         </div>
     </div>
+                    </fieldset>
+
+    <fieldset disabled="@Disabled" >
 
     <div class="form-group">
         <label>Daily Rate: </label>
@@ -77,18 +91,20 @@
             <ValidationMessage For="@(() => vehicle.MakeId)" />
         </div>
     </div>
-
+                        </fieldset>
     <br />
     <br />
-
+    @if (!Disabled){
     <button type="submit" class="btn btn-success btn-block">
         @ButtonText
     </button>
+    }
     <BackToList Target="vehicles"/>
 
 
 </EditForm>
 @code {
+    [Parameter] public bool Disabled { get; set; } = false;
     [Parameter] public Vehicle? vehicle { get; set; }
     [Parameter] public string ButtonText { get; set; } = "Save";
     [Parameter] public EventCallback OnValidSubmit { get; set; }

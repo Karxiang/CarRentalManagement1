@@ -6,26 +6,8 @@
 <hr />
 <br />
 
-<EditForm Model="@model" OnValidSubmit="CreateModel">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+<FormComponent ButtonText="Create Model" model="model" OnValidSubmit="@CreateModel" />
 
-    <div class="form-group">
-        <label>Name: </label>
-        <div>
-            <InputText @bind-Value="@model.Name" class="form-control" />
-            <ValidationMessage For="@(() => model.Name)" />
-        </div>
-    </div>
-
-    <br />
-    <br />
-
-    <button type="submit" class="btn btn-success btn-block">
-        Create Model
-    </button>
-
-</EditForm>
 
 
 @code {
